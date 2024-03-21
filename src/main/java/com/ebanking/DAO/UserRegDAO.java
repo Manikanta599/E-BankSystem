@@ -4,6 +4,7 @@ import com.ebanking.model.Bankuserdetails;
 
 public interface UserRegDAO {
 	
-	void userRegistration(Bankuserdetails bankUserDetails);
+	boolean userRegistration(Bankuserdetails bankUserDetails);
 
 }
+//agge jnxo btgs zism

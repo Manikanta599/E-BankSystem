@@ -5,7 +5,7 @@
 
 <h1>User Login</h1>
 
-<form action=""  method="post">
+<form action="login"  method="post">
 
 <input type="text" placeholder="Enter EmailId or Mobile Number" name="email"> <br><br>
 
