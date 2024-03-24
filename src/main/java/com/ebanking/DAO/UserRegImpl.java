@@ -1,11 +1,15 @@
 package com.ebanking.DAO;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpSession;
 
 import org.omg.CORBA.UserException;
 
@@ -17,6 +21,8 @@ public class UserRegImpl implements UserRegDAO {
 	private final String url="jdbc:mysql://localhost:3306/banking_pro?user=root&password=root";
 	private final String userReg="insert into bankuserdetails(User_name,User_emailid,User_MobileNumber,User_Password,"
 			+ "Accountnumber,IFSC_code,Address,Amount) values (?,?,?,?,?,?,?,?)";
+	private final String login="SELECT Accountnumber FROM bankuserdetails ORDER BY Accountnumber DESC LIMIT 1";
+
 	
 
 
@@ -56,6 +62,7 @@ public class UserRegImpl implements UserRegDAO {
 			if(res>0)
 			{
 				System.out.println("updated..");
+				
 				return true;
 			}
 			else
@@ -95,13 +102,15 @@ public class UserRegImpl implements UserRegDAO {
 				connection=DriverManager.getConnection(url);
 				Statement st = connection.createStatement();
 			
-			String query="SELECT Accountnumber FROM bankuserdetails ORDER BY account_number DESC LIMIT 1";
-			ResultSet rs=st.executeQuery(query);
+			ResultSet rs=st.executeQuery(login);
 			
 			if(rs.next())
 			{
-				long last_acc_num=rs.getLong("account_number");
+				long last_acc_num=rs.getLong("Accountnumber");
+				System.out.println("acc"+last_acc_num+1);
 				return last_acc_num+1;
+				
+				
 			}
 			else
 			{
@@ -117,6 +126,56 @@ public class UserRegImpl implements UserRegDAO {
 		}
 			return 1000000;
 	
+	}
+
+
+
+
+	public Bankuserdetails UserLogin(String password, String email) {
+		
+		
+		//PrintWriter pw=response.getWriter();
+		String query="select * from bankuserdetails where (User_emailid=? or User_MobileNumber=?) and User_Password=?";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/banking_pro?user=root&password=root");
+			PreparedStatement pst=con.prepareStatement(query);
+			
+			pst.setString(1, email);
+			pst.setString(2, email);
+			pst.setString(3, password);
+			
+			
+			ResultSet rs=pst.executeQuery();
+			
+			if(rs.next())
+			{
+				Bankuserdetails bankuserdetials=new Bankuserdetails();
+				bankuserdetials.setUser_name(rs.getString("User_name"));
+				bankuserdetials.setUser_emailid(rs.getString("User_emailid"));
+				bankuserdetials.setUser_Password(rs.getString("User_Password"));
+				bankuserdetials.setAccountnumber(rs.getString("Accountnumber"));
+				bankuserdetials.setAmount(rs.getDouble("Amount"));
+				bankuserdetials.setAddress(rs.getString("Address"));
+				bankuserdetials.setUser_id(rs.getInt("User_id"));
+				
+				return bankuserdetials;
+			}
+			else
+			{
+				return null;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 	}
 
 }

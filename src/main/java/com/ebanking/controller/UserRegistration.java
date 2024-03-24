@@ -25,14 +25,16 @@ public class UserRegistration extends HttpServlet{
 		String password=request.getParameter("pass");
 		String mobn=request.getParameter("mob");
 		String add=request.getParameter("add");
-		
-		Bankuserdetails bankUserDet=new Bankuserdetails();
+		String amount=request.getParameter("amo");
+		double amo=Double.parseDouble(amount);
+		Bankuserdetails bankUserDet=new Bankuserdetails();  
 		
 		bankUserDet.setUser_name(username);
 		bankUserDet.setUser_emailid(email);
 		bankUserDet.setUser_Password(password);
 		bankUserDet.setUser_MobileNumber(mobn);
 		bankUserDet.setAddress(add);
+		bankUserDet.setAmount(amo);
 		
 		System.out.println(bankUserDet.getAddress());
 		
@@ -40,8 +42,11 @@ public class UserRegistration extends HttpServlet{
 		
 		PrintWriter pw=response.getWriter();
 		
+		
+		
 		if(userReg.userRegistration(bankUserDet))
 		{
+			System.out.println("registred..");
 			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
 			rd.forward(request, response);
 			

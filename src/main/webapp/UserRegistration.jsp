@@ -19,6 +19,7 @@
 <input type="text" placeholder="Enter Your Mobile Num" name="mob"> <br><br>
 <input type="password" placeholder="Enter Your Password" name="pass"> <br><br>
 <input type="text" placeholder="Enter Your Address" name="add"> <br><br>
+<input type="text" placeholder="Enter Amount" name="amo" required="required"><br><br>
 
 
 <input type="submit" value="Registration"><br><br>
