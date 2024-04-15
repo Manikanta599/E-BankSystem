@@ -12,7 +12,7 @@ public interface UserRegDAO {
 	 boolean debitAmount(BankStatement bankStatement);
 	 boolean creditAmount(BankStatement bankStatement);
 	 
-	 List<BankStatement> getAllTransactions();
+	 List<BankStatement> getAllTransactions(String accno);
 	 
 	
 	

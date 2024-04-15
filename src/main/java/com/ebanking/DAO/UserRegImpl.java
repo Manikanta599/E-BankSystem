@@ -18,6 +18,7 @@ import org.omg.CORBA.UserException;
 
 import com.ebanking.model.BankStatement;
 import com.ebanking.model.Bankuserdetails;
+import com.mysql.cj.Session;
 
 public class UserRegImpl implements UserRegDAO {
 	
@@ -30,7 +31,7 @@ public class UserRegImpl implements UserRegDAO {
 			+ "Transcation_amount,Balance,Time_of_transcation,Bank_AccountNumber,User_id) values(?,?,?,?,?,?,?)";
 	private final String updateamount="update bankuserdetails set Amount =?  where Accountnumber=?";
 	
-	private final String AllTrans="select * from statement where Accountnumber=?";
+	private final String AllTrans="select * from statement where Bank_AccountNumber=?";
 	
 			 
 	
@@ -303,19 +304,24 @@ public class UserRegImpl implements UserRegDAO {
 
 
 	
-	public List<BankStatement> getAllTransactions() {
+	public List<BankStatement> getAllTransactions(String accno) {
 		
 		List<BankStatement> transactions = new ArrayList<BankStatement>();
 		
 		try {
 			connection=DriverManager.getConnection(url);
 			
-			PreparedStatement pst=connection.prepareStatement(updateamount);
+			PreparedStatement pst=connection.prepareStatement(AllTrans);
+			
+			
+			pst.setString(1,accno);
+			System.out.println(accno+" accno in impl");
 			
 			ResultSet rs=pst.executeQuery();
 			
 			if(rs.next())
 			{
+				System.out.println("count");
 				BankStatement transaction=new BankStatement();
 				transaction.setTransection_id(rs.getInt("Transection_id"));
                 transaction.setData_of_Transection(rs.getDate("Data_of_Transection"));

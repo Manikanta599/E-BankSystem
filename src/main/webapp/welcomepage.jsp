@@ -126,8 +126,9 @@ if (name != null) {
 <a href="debit.jsp"><input type="submit" value="Withdraw "></a>
 <a href="credit.jsp"><input type="submit" value="Credit Amount"></a></div>
 <div class="buttons">
-
+<form action="statement" method="post">
 <a href="statement.jsp"><input type="submit" value="Check Statement"></a>
+</form>
 <a href=""><input type="submit" value="Change password"></a>
 </div>
 </div>
