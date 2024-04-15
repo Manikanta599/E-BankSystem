@@ -318,8 +318,12 @@ public class UserRegImpl implements UserRegDAO {
 			System.out.println(accno+" accno in impl");
 			
 			ResultSet rs=pst.executeQuery();
-			
 			if(rs.next())
+			{
+				
+			
+			
+			while(rs.next())
 			{
 				System.out.println("count");
 				BankStatement transaction=new BankStatement();
@@ -334,6 +338,7 @@ public class UserRegImpl implements UserRegDAO {
                 
                 transactions.add(transaction);
 				
+			}
 			}
 			else
 			{

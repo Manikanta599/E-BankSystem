@@ -50,6 +50,7 @@ public class UserLogin extends HttpServlet{
 			session.setAttribute("accno", userlogin.getAccountnumber());
 			session.setAttribute("userBankAmount", userlogin.getAmount());
 			session.setAttribute("userid", userlogin.getUser_id());
+			session.setAttribute("pass", userlogin.getUser_Password());
 			System.out.println("login success");
 			RequestDispatcher rd=request.getRequestDispatcher("welcomepage.jsp");
 			rd.forward(request, response);
