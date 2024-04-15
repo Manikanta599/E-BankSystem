@@ -1,6 +1,7 @@
 package com.ebanking.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,47 +10,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 @WebServlet("/debit")
 public class Debit extends HttpServlet{
-	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String account=request.getParameter("acc");
 		
-		String accnum=request.getParameter("accno");
-		System.out.println(accnum+"from page");
 		HttpSession session=request.getSession();
-		String accvalid="";
-		String accnumber=(String) session.getAttribute("accno");
-		String accnumus=accnum+"";
-		System.out.println(accnumber+"from session");
-		if(accnumus.equals(accnumber))
+		String account2=(String)session.getAttribute("accno");
+		PrintWriter writer=response.getWriter();
+		response.setContentType("text/html");
+		
+		System.out.println(account+"from user");
+		System.out.println(account2+"from login");
+		if(account.equals(account2))
 		{
-			
-			accvalid="yes";
-			System.out.println("yes acc");
-			/*session.setAttribute("accvalid", accvalid);
+			session.setAttribute("msg","yes");
 			RequestDispatcher rd=request.getRequestDispatcher("debit.jsp");
-			rd.forward(request, response);*/
-			
+			rd.forward(request, response);
+			System.out.println("valid");
 		}
-		else
-		{
-			accvalid="no";
-			/*RequestDispatcher rd=request.getRequestDispatcher("debit.jsp");
-			rd.forward(request, response);*/
-			System.out.println("not valid acc number");
+		else {
+			session.setAttribute("msg","no");
+			RequestDispatcher rd=request.getRequestDispatcher("debit.jsp");
+			rd.forward(request, response);
+			System.out.println("not valid");
 		}
-		
-		
-		// Set accvalid attribute in session
-        session.setAttribute("accvalid", accvalid);
-        
-        // Forward the request to debit.jsp
-        RequestDispatcher rd = request.getRequestDispatcher("debit.jsp");
-        rd.forward(request, response);
-		
 	}
-	
-	
 
 }

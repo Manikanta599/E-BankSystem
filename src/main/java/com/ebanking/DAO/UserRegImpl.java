@@ -7,12 +7,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.*;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpSession;
 
+import org.apache.el.parser.BooleanNode;
 import org.omg.CORBA.UserException;
 
+import com.ebanking.model.BankStatement;
 import com.ebanking.model.Bankuserdetails;
 
 public class UserRegImpl implements UserRegDAO {
@@ -22,7 +26,15 @@ public class UserRegImpl implements UserRegDAO {
 	private final String userReg="insert into bankuserdetails(User_name,User_emailid,User_MobileNumber,User_Password,"
 			+ "Accountnumber,IFSC_code,Address,Amount) values (?,?,?,?,?,?,?,?)";
 	private final String login="SELECT Accountnumber FROM bankuserdetails ORDER BY Accountnumber DESC LIMIT 1";
-
+	private final String insertStatemet="insert into statement (Data_of_Transection,Transection_type,"
+			+ "Transcation_amount,Balance,Time_of_transcation,Bank_AccountNumber,User_id) values(?,?,?,?,?,?,?)";
+	private final String updateamount="update bankuserdetails set Amount =?  where Accountnumber=?";
+	
+	private final String AllTrans="select * from statement where Accountnumber=?";
+	
+			 
+	
+	
 	
 
 
@@ -177,5 +189,161 @@ public class UserRegImpl implements UserRegDAO {
 		return null;
 		
 	}
+
+
+
+
+	public boolean debitAmount(BankStatement bankStatement) {
+		
+		
+		try {
+			connection=DriverManager.getConnection(url);
+			PreparedStatement pst=connection.prepareStatement(updateamount);
+			pst.setDouble(1, bankStatement.getBalance());
+			pst.setString(2, bankStatement.getBank_AccountNumber());
+			
+			int res=pst.executeUpdate();
+			
+			if(res!=0)
+			{
+				System.out.println("debit amount updated");
+				
+				PreparedStatement pst1=connection.prepareStatement(insertStatemet);
+				pst1.setDate(1, bankStatement.getData_of_Transection());	
+				pst1.setString(2, bankStatement.getTransection_type());
+				pst1.setString(3, bankStatement.getTranscation_amount());
+				
+				pst1.setDouble(4, bankStatement.getBalance());
+				pst1.setTime(5, bankStatement.getTime_of_transcation());
+				pst1.setString(6, bankStatement.getBank_AccountNumber());
+				pst1.setInt(7, bankStatement.getUser_id());
+				
+				int res1=pst1.executeUpdate();   
+				
+				if(res1!=0)
+				{
+					System.out.println("debit statement updated");
+					return true;
+				}
+				else
+				{	
+					System.out.println("debit statement not updated");
+					return false;
+				}
+	
+			}
+			else
+			{
+				System.out.println("debit amont not updated");
+			}
+		
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+
+
+
+	public boolean creditAmount(BankStatement bankStatement) {
+		
+		try {
+			connection=DriverManager.getConnection(url);
+			
+			PreparedStatement pst=connection.prepareStatement(updateamount);
+			pst.setDouble(1, bankStatement.getBalance());
+			pst.setString(2, bankStatement.getBank_AccountNumber());
+			
+			int res=pst.executeUpdate();
+			
+			if(res!=0)
+			{
+				System.out.println("credit amount updated");
+				
+				PreparedStatement pst1=connection.prepareStatement(insertStatemet);
+				pst1.setDate(1, bankStatement.getData_of_Transection());	
+				pst1.setString(2, bankStatement.getTransection_type());
+				pst1.setString(3, bankStatement.getTranscation_amount());
+				
+				pst1.setDouble(4, bankStatement.getBalance());
+				pst1.setTime(5, bankStatement.getTime_of_transcation());
+				pst1.setString(6, bankStatement.getBank_AccountNumber());
+				pst1.setInt(7, bankStatement.getUser_id());
+				
+				int res1=pst1.executeUpdate();   
+				
+				if(res1!=0)
+				{
+					System.out.println("credit statement updated");
+					return true;
+				}
+				else
+				{	
+					System.out.println("credit statement not updated");
+					return false;
+				}
+	
+			}
+			else
+			{
+				System.out.println(" credit amont not updated");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+
+	
+	public List<BankStatement> getAllTransactions() {
+		
+		List<BankStatement> transactions = new ArrayList<BankStatement>();
+		
+		try {
+			connection=DriverManager.getConnection(url);
+			
+			PreparedStatement pst=connection.prepareStatement(updateamount);
+			
+			ResultSet rs=pst.executeQuery();
+			
+			if(rs.next())
+			{
+				BankStatement transaction=new BankStatement();
+				transaction.setTransection_id(rs.getInt("Transection_id"));
+                transaction.setData_of_Transection(rs.getDate("Data_of_Transection"));
+                transaction.setTransection_type(rs.getString("Transection_type"));
+                transaction.setTranscation_amount(rs.getString("Transcation_amount"));
+                transaction.setBalance(rs.getDouble("Balance"));
+                transaction.setTime_of_transcation(rs.getTime("Time_of_transcation"));
+                transaction.setBank_AccountNumber(rs.getString("Bank_AccountNumber"));
+                transaction.setUser_id(rs.getInt("User_id"));
+                
+                transactions.add(transaction);
+				
+			}
+			else
+			{
+				System.out.println("no transations");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return transactions;
+	}
+	
+	
+	
+	
 
 }

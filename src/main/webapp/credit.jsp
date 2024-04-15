@@ -7,21 +7,24 @@
 <title>Insert title here</title>
 </head>
 <body>
-<center>
-<h2>Debit Transaction</h2>
 
-    <form action="debit" method="post">
-        <input type="text" placeholder="Enter Your Account Number" name="acc">
+<h2>Credit Transaction</h2>
+
+    <form action="credit" method="post">
+        <input type="text" placeholder="Enter Your Account Number" name="accno">
         <input type="submit" value="Submit">
     </form>
     
     <%
-    String status = (String) session.getAttribute("msg");
     
-    System.out.println(status);
+    
+    String status = (String) session.getAttribute("credit_validation");
+    
+    System.out.println(status+"credit status");
     if (status != null && status.equals("yes")) {
+    	
     %>
-        <form action="amountvalidation" method="post">
+        <form action="creditAmount" method="post">
             <input type="text" placeholder="Enter Your Amount" name="amount">
             <input type="submit" value="Submit">
         </form>
@@ -29,11 +32,14 @@
         
     <%
     
-    } else 
+    } 
+    else 
     {
         out.println("Invalid Account Number");
     }
     %>
-</center>
+    
+    
+
 </body>
 </html>

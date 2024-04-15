@@ -9,7 +9,7 @@ public class BankStatement {
 	private Date data_of_Transection;
 	private Time time_of_transcation;
 	private String transection_type;
-	private double  transcation_amount;
+	private String  transcation_amount;
 	private double balance;
 	private String bank_AccountNumber;
 	private int user_id;
@@ -20,7 +20,7 @@ public class BankStatement {
 	
 	
 	public BankStatement(int transection_id, Date data_of_Transection, Time time_of_transcation,
-			String transection_type, double transcation_amount, double balance, String bank_AccountNumber,
+			String transection_type, String transcation_amount, double balance, String bank_AccountNumber,
 			int user_id) {
 		//super();
 		this.transection_id = transection_id;
@@ -74,12 +74,12 @@ public class BankStatement {
 	}
 
 
-	public double getTranscation_amount() {
+	public String getTranscation_amount() {
 		return transcation_amount;
 	}
 
 
-	public void setTranscation_amount(double transcation_amount) {
+	public void setTranscation_amount(String transcation_amount) {
 		this.transcation_amount = transcation_amount;
 	}
 

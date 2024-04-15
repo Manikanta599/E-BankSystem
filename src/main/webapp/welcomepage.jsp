@@ -124,9 +124,10 @@ if (name != null) {
 <div class="container">
 <div class="buttons">
 <a href="debit.jsp"><input type="submit" value="Withdraw "></a>
-<a href=""><input type="submit" value="Credit Amount"></a></div>
+<a href="credit.jsp"><input type="submit" value="Credit Amount"></a></div>
 <div class="buttons">
-<a href=""><input type="submit" value="Check Statement"></a>
+
+<a href="statement.jsp"><input type="submit" value="Check Statement"></a>
 <a href=""><input type="submit" value="Change password"></a>
 </div>
 </div>

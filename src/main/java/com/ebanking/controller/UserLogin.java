@@ -48,6 +48,8 @@ public class UserLogin extends HttpServlet{
 		{
 			session.setAttribute("name", userlogin.getUser_name());
 			session.setAttribute("accno", userlogin.getAccountnumber());
+			session.setAttribute("userBankAmount", userlogin.getAmount());
+			session.setAttribute("userid", userlogin.getUser_id());
 			System.out.println("login success");
 			RequestDispatcher rd=request.getRequestDispatcher("welcomepage.jsp");
 			rd.forward(request, response);
