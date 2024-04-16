@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ebanking.DAO.UserRegDAO;
+import com.ebanking.DAO.UserRegImpl;
+
 @WebServlet("/changePassword")
 public class ChangePassword extends HttpServlet{
 	
@@ -24,6 +27,8 @@ public class ChangePassword extends HttpServlet{
 		String pin=(String) session.getAttribute("pass");
 		System.out.println(pin+"from db");
 		String Pvalid="";
+		
+		
 		
 		if(oldPin.equals(pin))
 		{

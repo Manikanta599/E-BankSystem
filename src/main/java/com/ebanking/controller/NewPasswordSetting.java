@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ebanking.DAO.UserRegDAO;
+import com.ebanking.DAO.UserRegImpl;
+
 @WebServlet("/updatePassword")
 public class NewPasswordSetting extends HttpServlet{
 	
@@ -23,6 +26,9 @@ public class NewPasswordSetting extends HttpServlet{
 		HttpSession session=request.getSession();
 		PrintWriter pw=response.getWriter();
 		String pin=(String) session.getAttribute("pass");
+		String accno=(String) session.getAttribute("accno");
+		
+		UserRegDAO users=(UserRegDAO) new UserRegImpl();
 		
 		if(pass1.equals(pin))
 		{
@@ -34,6 +40,7 @@ public class NewPasswordSetting extends HttpServlet{
 		{
 			if(pass1.equals(pass2))
 			{
+				users.updatePassword(accno, pass2);
 				pw.println("updated sucessfully");
 				System.out.println("updated sucessfully");
 			}

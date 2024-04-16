@@ -33,6 +33,8 @@ public class UserRegImpl implements UserRegDAO {
 	
 	private final String AllTrans="select * from statement where Bank_AccountNumber=?";
 	
+	private final String updatePass="update bankuserdetails set User_Password= ? where Accountnumber=?";
+	
 			 
 	
 	
@@ -200,8 +202,8 @@ public class UserRegImpl implements UserRegDAO {
 		try {
 			connection=DriverManager.getConnection(url);
 			PreparedStatement pst=connection.prepareStatement(updateamount);
-			pst.setDouble(1, bankStatement.getBalance());
-			pst.setString(2, bankStatement.getBank_AccountNumber());
+			pst.setDouble(1, bankStatement.getBalance()); 
+			pst.setString(2, bankStatement.getBank_AccountNumber()); 
 			
 			int res=pst.executeUpdate();
 			
@@ -351,6 +353,41 @@ public class UserRegImpl implements UserRegDAO {
 		}
 		
 		return transactions;
+	}
+
+
+
+
+	public boolean updatePassword(String accno,String pin) {
+		
+		try {
+			connection =DriverManager.getConnection(url);
+			
+			PreparedStatement pst=connection.prepareStatement(updatePass);
+			
+			pst.setString(1, pin);
+			pst.setString(2, accno);
+			
+			int res=pst.executeUpdate();
+			
+			if(res>0)
+			{
+				System.out.println("pin updated to database");
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return false;
 	}
 	
 	

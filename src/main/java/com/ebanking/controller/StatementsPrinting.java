@@ -52,7 +52,5 @@ public class StatementsPrinting extends HttpServlet{
 		{
 			System.out.println("empty");
 		}
-		
-	
 	}
 }

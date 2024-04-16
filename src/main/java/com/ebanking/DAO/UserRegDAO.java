@@ -14,6 +14,8 @@ public interface UserRegDAO {
 	 
 	 List<BankStatement> getAllTransactions(String accno);
 	 
+	 boolean updatePassword(String accno,String pin);
+	 
 	
 	
 
